@@ -118,7 +118,7 @@ def Simulation(x, state_vector, step, alpha, delta, g, D, d, m_tot, P_amb, P_1,
             t += step
     t_stages = np.append(t_stages, t)
 
-        # %% SECOND STAGE: PROPULSIVE PHASE (AIR THRUST).
+    # %% SECOND STAGE: PROPULSIVE PHASE (AIR THRUST).
     while state_vector[4] >= P_amb:
 
         # Compute the inputs.
@@ -147,7 +147,7 @@ def Simulation(x, state_vector, step, alpha, delta, g, D, d, m_tot, P_amb, P_1,
             t += step
     t_stages = np.append(t_stages, t)
 
-        # %% THIRD STAGE: NO THRUST.
+    # %% THIRD STAGE: NO THRUST.
 
     T = 0
 

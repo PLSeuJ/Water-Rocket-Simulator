@@ -7,11 +7,12 @@ This file contains the Equations of the Tank of the rocket. These will
 be integrated using the Runge-Kutta 4th order method.
 """
 
-def TankRhoDer(t, y, rho_t,v_n,A_e,V):
 
-    # V is the volume of the bottle
-    drhodt = - rho_t*v_n*A_e/V;
-    return drhodt
+def TankRhoDer(t, y, rho_t, v_n, A_e, V):
+    """
+    input: V is the volume of the bottle
+    """
+    return -rho_t*v_n*A_e/V
 
 
 def TankDensComp(rho_t, v_n, A_e, V, step):
@@ -19,16 +20,15 @@ def TankDensComp(rho_t, v_n, A_e, V, step):
     Compute the density of the air inside the tank given initial
     conditions and the time step of integration.
     """
-    rho_t = solve_ivp(TankRhoDer, (0, step), [rho_t],
+    rho_t = solve_ivp(TankRhoDer,
+                      (0, step),
+                      [rho_t],
                       args=(rho_t, v_n, A_e, V))
     return rho_t.y[0][-1]
 
 
 def TankPressDer(t, y, P_atm, A_e, v_n, V, p, gamma=1.4):
-
-    dpdt = 0.5*((gamma-1)*p - (gamma+1)*P_atm)*v_n*A_e/V
-
-    return dpdt
+    return 0.5*((gamma-1)*p - (gamma+1)*P_atm)*v_n*A_e/V
 
 
 def TankPressComp(P_atm, A_e, v_n, V, p, step):
@@ -41,18 +41,12 @@ def TankPressComp(P_atm, A_e, v_n, V, p, step):
     return p.y[0][-1]
 
 
-def TempComp(p, rho, Rg = 287):
-
-    T = Rg*p/rho
-
-    return T
+def TempComp(p, rho, Rg=287):
+    """
+    Compute the Temperature from the ideal gas equation
+    """
+    return Rg*p/rho
 
 
 def VnozzleComp(p, P_atm, rho_t):
-
-    v_n = np.sqrt((p - P_atm)/rho_t)
-    return v_n
-
-
-
-
+    return np.sqrt((p - P_atm)/rho_t)
